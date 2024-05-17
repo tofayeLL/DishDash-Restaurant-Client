@@ -28,12 +28,15 @@ const PopularMenu = () => {
             <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-20 gap-8">
                 {
                     menu.map(item => <MenuItem
-                    item={item}
-                    key={item._id}></MenuItem> )
+                        item={item}
+                        key={item._id}></MenuItem>)
                 }
 
             </div>
+           <div className="flex flex-col items-center pt-10">
+           <button className="p-3 text-base border-b-2  btn btn-outline border-0 uppercase">View Full  Menu</button>
 
+           </div>
 
 
         </section>

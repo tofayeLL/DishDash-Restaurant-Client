@@ -4,10 +4,10 @@ import './Featured.css'
 
 const Featured = () => {
     return (
-        <section className="featured-item py-0 bg-fixed ">
+        <section className="featured-item  bg-fixed ">
             <div className="bg-[linear-gradient(45deg,rgba(0,0,0,0.5),rgba(0,0,0,0.7))]">
 
-                <div className="pt-8 text-white">
+                <div className="pt-10 text-white">
                     <SectionTitle
                         subheading={"---Check it out---"}
                         heading={"FROM OUR MENU"}
@@ -15,7 +15,7 @@ const Featured = () => {
                 </div>
 
 
-                <div className="flex justify-center  items-center gap-8 py-10 px-40 text-white">
+                <div className="flex justify-center  items-center gap-8 pb-16 px-40 text-white">
                     <div className="flex-1">
                         <img src={featuredImg} alt="" className="" />
                     </div>
@@ -24,7 +24,7 @@ const Featured = () => {
                         <h4>March 20, 2024</h4>
                         <h3>WHERE CAN I GET SOME?</h3>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptate facere, deserunt dolores maiores quod nobis quas quasi. Eaque repellat recusandae ad laudantium tempore consequatur consequuntur omnis ullam maxime tenetur</p>
-                        <button className="p-3 border-b-2 text-white btn btn-outline border-0">Read More</button>
+                        <button className="p-3 text-base border-b-2 text-white btn btn-outline border-0 uppercase">Read More</button>
                     </div>
 
                 </div>
