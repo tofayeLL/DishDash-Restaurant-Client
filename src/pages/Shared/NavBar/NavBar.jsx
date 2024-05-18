@@ -8,6 +8,7 @@ const NavBar = () => {
 
     <li><NavLink to={'/'}>Home</NavLink></li>
     <li><NavLink to={'/menu'}>OurMenu</NavLink></li>
+    <li><NavLink to={'/order/salad'}>Ordered</NavLink></li>
     
     
     </>
@@ -31,7 +32,7 @@ const NavBar = () => {
                            }
                         </ul>
                     </div>
-                    <a className="btn btn-ghost text-xl">daisyUI</a>
+                    <a className="btn btn-ghost text-xl">DishDash</a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1 space-x-2">
