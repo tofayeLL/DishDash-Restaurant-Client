@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 const FoodCard = ({ item }) => {
 
     const { name, image, price, recipe } = item;
+
+    const handleAddToCart = (food) => {
+        console.log(food);
+    }
     return (
         <div>
 
@@ -26,7 +30,10 @@ const FoodCard = ({ item }) => {
                     </div>
                     <div className="text-center">
                         <Link>
-                            <button className="px-4 py-3 bg-gray-200 text-base border-b-2 border-amber-400 text-amber-400 btn btn-outline border-0 uppercase ">Add To Cart</button>
+                            <button 
+                             onClick={() => handleAddToCart(item)}
+
+                            className="px-4 py-3 bg-gray-200 text-base border-b-2 border-amber-400 text-amber-400 btn btn-outline border-0 uppercase ">Add To Cart</button>
                         </Link>
                     </div>
                 </div>

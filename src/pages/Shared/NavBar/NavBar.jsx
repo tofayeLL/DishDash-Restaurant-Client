@@ -1,9 +1,28 @@
 
 import { NavLink } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
+import { FaShoppingCart } from "react-icons/fa";
+
 
 
 
 const NavBar = () => {
+
+    const { user, logOutUser } = useAuth();
+
+
+
+    const handleLogOutUser = (e) => {
+        e.preventDefault();
+        // logout user
+        logOutUser()
+            .then(
+                console.log('logout successfully')
+
+
+
+            )
+    }
 
 
 
@@ -11,18 +30,33 @@ const NavBar = () => {
         <li><NavLink to={'/'}>Home</NavLink></li>
         <li><NavLink to={'/menu'}>OurMenu</NavLink></li>
         <li><NavLink to={'/order/salad'}>Ordered</NavLink></li>
-        <li><NavLink to={'/login'}>Log in</NavLink></li>
-        <li><NavLink to={'/signUp'}>Sign up</NavLink></li>
+        <li><NavLink to={'/secret'}>Secret</NavLink></li>
+        <li><NavLink to={'/'}>
+            <button className="flex items-center gap-1">
+                <span className="text-2xl">< FaShoppingCart></FaShoppingCart></span>
+                <div className="badge badge-secondary">+99</div>
+            </button>
+        </NavLink></li>
+
+
+        {
+            user ?
+
+                <div><button onClick={handleLogOutUser} className="btn">Logout</button></div> :
+                <li><NavLink to={'/login'}><button className="btn">Log in</button></NavLink></li>
+
+
+        }
     </>
 
-    
+
 
 
 
 
     return (
         <div className="">
-           
+
 
 
             <div className="navbar fixed z-10  bg-opacity-20  text-white  bg-black container mx-auto">
@@ -48,7 +82,7 @@ const NavBar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <a className="btn">Button</a>
+                    {/* <a className="btn">Button</a> */}
                 </div>
             </div>
 

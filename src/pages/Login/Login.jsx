@@ -1,23 +1,27 @@
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect,  useState } from 'react';
 import image from '../../assets/others/authentication1.png';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import useAuth from '../../hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 
 const Login = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
     // for disable login button
     const [disable, setDisable] = useState(true);
 
     // from auth provider
     const { signInUser } = useAuth();
-    console.log(signInUser);
+    // console.log(signInUser);
 
 
     // for useRef 
-    const captchaRef = useRef(null);
+    // const captchaRef = useRef(null);
     // react simple captcha
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -35,17 +39,33 @@ const Login = () => {
         signInUser(email, password)
             .then((result) => {
                 console.log(result.user);
+                Swal.fire({
+                    title: "Login Successfully",
+                    showClass: {
+                      popup: `
+                        animate__animated
+                        animate__fadeInUp
+                        animate__faster
+                      `
+                    },
+                    hideClass: {
+                      popup: `
+                        animate__animated
+                        animate__fadeOutDown
+                        animate__faster
+                      `
+                    }
+                  });
+                  navigate(from, { replace: true });
             })
-            .then((error) => {
-                console.log(error.message);
-            })
+           
 
     }
 
     // handle captcha
-    const handleValidateCaptcha = () => {
+    const handleValidateCaptcha = (e) => {
 
-        const user_captcha_value = captchaRef.current.value;
+        const user_captcha_value = e.target.value;
 
         if (validateCaptcha(user_captcha_value)) {
 
@@ -96,9 +116,8 @@ const Login = () => {
                                 <label className="label">
                                     <LoadCanvasTemplate />
                                 </label>
-                                <input type="text" ref={captchaRef} name="captcha" placeholder="type the text above" className="input input-bordered" required />
-                                <button onClick={handleValidateCaptcha} className="btn my-3 btn-outline btn-accent btn-xs">Vlidate</button>
-
+                                <input  onBlur={handleValidateCaptcha}  type="text"  name="captcha" placeholder="type the text above" className="input input-bordered" required />
+                           
                             </div>
                             <div className="form-control mt-6">
                                 <button disabled={disable} className="btn btn-primary">Sign In</button>
