@@ -9,6 +9,7 @@ import useCart from "../../../hooks/useCart";
 
 const NavBar = () => {
     const [cart] = useCart();
+ 
 
     const { user, logOutUser } = useAuth();
 
@@ -36,7 +37,7 @@ const NavBar = () => {
         <li><NavLink to={'/'}>
             <button className="flex items-center gap-1">
                 <span className="text-2xl">< FaShoppingCart></FaShoppingCart></span>
-                <div className="badge badge-secondary">{cart.length}</div>
+                <div className="badge badge-secondary">+{cart.length}</div>
             </button>
         </NavLink></li>
 

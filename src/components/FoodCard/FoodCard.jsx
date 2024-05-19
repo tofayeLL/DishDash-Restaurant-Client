@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useCart from "../../hooks/useCart";
 
 
 const FoodCard = ({ item }) => {
@@ -14,10 +15,12 @@ const FoodCard = ({ item }) => {
 
     // axios secure from hooks
     const axiosSecure = useAxiosSecure();
+    // get refetch from useCart hooks
+    const [, refetch] = useCart();
 
-    const handleAddToCart = (food) => {
+    const handleAddToCart = () => {
         if (user && user?.email) {
-            console.log(user.email, food)
+
             // To send data to the client
             const cartItem = {
                 menuId: _id,
@@ -27,19 +30,22 @@ const FoodCard = ({ item }) => {
                 price
 
             }
-            
+
             axiosSecure.post('/carts', cartItem)
-            .then(data => {
-                console.log(data.data);
-                if(data.data.insertedId){
-                    Swal.fire({
-                        title: 'success!',
-                        text: `${name} Added your cart successfully`,
-                        icon: 'success',
-                        confirmButtonText: 'Cool'
-                      })
-                }
-            })
+                .then(data => {
+                    console.log(data.data);
+                    if (data.data.insertedId) {
+                        Swal.fire({
+                            title: 'success!',
+                            text: `${name} Added your cart successfully`,
+                            icon: 'success',
+                            confirmButtonText: 'Cool'
+                        })
+                    }
+                })
+                
+                // refetch ---- cart items count instantly update by use refetch
+                refetch();
 
 
         }
@@ -54,7 +60,7 @@ const FoodCard = ({ item }) => {
                 confirmButtonText: "Yes, please login!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    navigate('/login', {state: {from: location}});
+                    navigate('/login', { state: { from: location } });
                 }
             });
         }
@@ -82,7 +88,7 @@ const FoodCard = ({ item }) => {
                     <div className="text-center">
                         <Link>
                             <button
-                                onClick={() => handleAddToCart(item)}
+                                onClick={handleAddToCart}
 
                                 className="px-4 py-3 bg-gray-200 text-base border-b-2 border-amber-400 text-amber-400 btn btn-outline border-0 uppercase ">Add To Cart</button>
                         </Link>
