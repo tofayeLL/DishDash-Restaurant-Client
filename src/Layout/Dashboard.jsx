@@ -1,4 +1,5 @@
 import { FaCalendar, FaHome, FaShoppingCart } from "react-icons/fa";
+import { LuMenu } from "react-icons/lu";
 import { MdEditCalendar } from "react-icons/md";
 import { VscPreview } from "react-icons/vsc";
 import { NavLink, Outlet } from "react-router-dom";
@@ -8,7 +9,7 @@ const Dashboard = () => {
     return (
         <div className="flex ">
 
-            <div className="w-64 min-h-screen bg-amber-400">
+            <div className="w-64 min-h-screen bg-amber-400 ">
                 <ul className="menu p-4">
 
                     <li>
@@ -31,11 +32,39 @@ const Dashboard = () => {
 
                         <NavLink to={'/dashboard/myBooking'}><span> <MdEditCalendar></MdEditCalendar></span>My Booking</NavLink>
                     </li>
+
+
+
+                    <div className="divider "></div>
+
+
+
+                    <li>
+                        <NavLink to={'/'}><span> <FaHome></FaHome></span>Home</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={'/order/salad'}><span> <LuMenu></LuMenu></span>Menu</NavLink>
+                    </li>
+
+
+
+
+
                 </ul>
+
+
+
 
             </div>
 
-            <div className="flex-1">
+
+
+
+
+
+
+
+            <div className="flex-1  p-10">
                 <Outlet></Outlet>
             </div>
 
