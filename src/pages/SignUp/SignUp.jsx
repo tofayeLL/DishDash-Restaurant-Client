@@ -44,7 +44,7 @@ const SignUp = () => {
                         if (data.data.insertedId) {
                             console.log('user info saved database ')
                             Swal.fire({
-                                title: "user profile update Successfully",
+                                title: "SignUp Successfully",
                                 showClass: {
                                     popup: `
                                 animate__animated
