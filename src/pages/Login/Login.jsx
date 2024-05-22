@@ -6,6 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 
 const Login = () => {
@@ -122,6 +123,8 @@ const Login = () => {
                             <div className="form-control mt-6">
                                 <button disabled={disable} className="btn btn-primary">Sign In</button>
                             </div>
+
+                            <SocialLogin></SocialLogin>
 
                             <div className="text-center " >
                                 <p className="font-medium mt-6 lg:text-base text-sm mr-2">Do not have an account ?  Please <Link to={'/signUp'} className="btn-active text-purple-600 btn-link">Register</Link></p>

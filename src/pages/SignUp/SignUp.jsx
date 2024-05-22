@@ -4,12 +4,15 @@ import { useForm } from "react-hook-form"
 import useAuth from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 
 
 
 
 const SignUp = () => {
+    const axiosPublic = useAxiosPublic();
     const navigate = useNavigate();
 
     const {
@@ -28,26 +31,43 @@ const SignUp = () => {
             .then((result) => {
                 console.log(result.user);
                 updateUserProfile(data.name, data.photoURL);
-                console.log('user profile update successfully');
-                Swal.fire({
-                    title: "user profile update Successfully",
-                    showClass: {
-                      popup: `
-                        animate__animated
-                        animate__fadeInUp
-                        animate__faster
-                      `
-                    },
-                    hideClass: {
-                      popup: `
-                        animate__animated
-                        animate__fadeOutDown
-                        animate__faster
-                      `
-                    }
-                  });
-                reset();
-                navigate('/login')
+                // console.log('user profile update successfully');
+
+                // create user info save in database
+                const userInfo = {
+                    name: data.name,
+                    email: data.email
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(data => {
+                        console.log(data.data);
+                        if (data.data.insertedId) {
+                            console.log('user info saved database ')
+                            Swal.fire({
+                                title: "user profile update Successfully",
+                                showClass: {
+                                    popup: `
+                                animate__animated
+                                animate__fadeInUp
+                                animate__faster
+                              `
+                                },
+                                hideClass: {
+                                    popup: `
+                                animate__animated
+                                animate__fadeOutDown
+                                animate__faster
+                              `
+                                }
+                            });
+                            reset();
+                            navigate('/login')
+                        }
+
+                    })
+
+
+
             })
             .catch((error) => {
                 console.log(error.message);
@@ -128,6 +148,8 @@ const SignUp = () => {
                                 <input className="btn btn-primary" type="submit" value="Sign up" />
 
                             </div>
+
+                            <SocialLogin></SocialLogin>
 
 
                             <div className="text-center " >
