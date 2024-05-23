@@ -11,7 +11,13 @@ const AllUsers = () => {
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const data = await axiosSecure.get('/users')
+            const data = await axiosSecure.get('/users'
+            /* set this in axios secure thats why here it will not need if not set in axios secure then it will need
+             , {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('access-token')}`
+                }
+            } */)
             return data.data;
         }
     })
@@ -48,8 +54,6 @@ const AllUsers = () => {
                                 // delete count update instantly in ui by use refetch
                                 refetch();
 
-
-
                             }
                         })
 
@@ -77,9 +81,7 @@ const AllUsers = () => {
 
             .then((result) => {
                 if (result.isConfirmed) {
-
                     axiosSecure.patch(`/users/admin/${user._id}`)
-
                         .then(data => {
                             console.log(data.data);
                             if (data.data.modifiedCount > 0) {
@@ -88,14 +90,10 @@ const AllUsers = () => {
                                     text: `${user.name} is an admin now`,
                                     icon: "success"
                                 });
-
                                 // delete count update instantly in ui by use refetch
                                 refetch();
-
-
                             }
                         })
-
                 }
             });
 
