@@ -13,15 +13,15 @@ const useAxiosSecure = () => {
 
 
     // request interceptors for authorization every single api //
-    axiosSecure.interceptors.request.use(function (config) {
-        // Do something before request is sent it stops request and do something like set token in backend
+    axiosSecure.interceptors.request.use(function (config) {  
         // console.log('request stop from interceptors');
         const token = localStorage.getItem('access-token');
-        console.log('from interceptors', token);
+
+        // console.log('from interceptors', token);
         config.headers.authorization = `Bearer ${token}`
         return config;
     }, function (error) {
-        // Do something with request error
+        
         return Promise.reject(error);
     });
 
@@ -32,14 +32,16 @@ const useAxiosSecure = () => {
     }, async (error) => {
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         // Do something with response error
+
         const status = error.response?.request?.status;
-        console.log('status error from interceptors', status);
+        // console.log('status error from interceptors', status);
+
         // for 401 or 403 request user must be navigate to the loginpage and also logout the user
         if (status === 401 || status === 403) {
 
             await logOutUser();
 
-            navigate('/login')
+            navigate('/login');
 
         }
         return Promise.reject(error);

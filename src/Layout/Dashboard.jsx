@@ -5,13 +5,15 @@ import { VscPreview } from "react-icons/vsc";
 import { NavLink, Outlet } from "react-router-dom";
 import useCart from "../hooks/useCart";
 import { GiForkKnifeSpoon } from "react-icons/gi";
+import useAdmin from "../hooks/useAdmin";
 
 
 const Dashboard = () => {
     const [cart] = useCart();
 
     // TODO: will get admin value from database
-    const isAdmin = true;
+    const [isAdmin] = useAdmin();
+    console.log(isAdmin);
 
 
 
