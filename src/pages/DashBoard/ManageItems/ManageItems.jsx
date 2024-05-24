@@ -1,21 +1,64 @@
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import useMenu from "../../../hooks/useMenu";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
 
 
 
 const ManageItems = () => {
-    const [menu] = useMenu();
-    console.log(menu);
+    const [menu, loading, refetch] = useMenu();
+
+    // console.log(menu);
+
+    const axiosSecure = useAxiosSecure();
+
+    if(loading){
+        // from useMenu tan stack loading
+        return <div className="flex flex-col justify-center items-center"><span className="loading loading-bars loading-lg"></span></div>
+    }
 
     // handle DELETE
     const handleDeleteItem = (item) => {
         console.log(item);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        })
+
+            .then(async (result) => {
+                if (result.isConfirmed) {
+                    // 
+                    const res = await axiosSecure.delete(`/menu/${item._id}`);
+                    console.log(res.data);
+                    if (res.data.deletedCount > 0) {
+
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: `${item.name} item has been deleted`,
+                            icon: "success"
+                        });
+
+
+                        // user refetch for delete from ui instantly
+                        refetch();
+
+                    }
+                }
+
+            })
+
     }
 
 
 
-   
+
 
     return (
         <div>
@@ -35,8 +78,6 @@ const ManageItems = () => {
                         <thead className="bg-gray-300">
                             <tr>
                                 <th>
-
-
                                 </th>
                                 <th>ITEM IMAGE</th>
                                 <th>ITEM NAME</th>
@@ -69,7 +110,7 @@ const ManageItems = () => {
                                     </td>
                                     <td>{item.price}</td>
                                     <td>
-                                        <button 
+                                        <button
                                             className="bg-amber-400 p-2 rounded-md">
                                             <span className="text-lg text-white "><FaEdit></FaEdit></span>
                                         </button>
@@ -80,9 +121,6 @@ const ManageItems = () => {
                                             <span className="text-lg text-base-200"><FaRegTrashAlt></FaRegTrashAlt></span>
                                         </button>
                                     </td>
-
-
-
                                 </tr>)
                             }
 
