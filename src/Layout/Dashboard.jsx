@@ -13,7 +13,7 @@ const Dashboard = () => {
 
     // TODO: will get admin value from database
     const [isAdmin] = useAdmin();
-    console.log(isAdmin);
+   
 
 
 

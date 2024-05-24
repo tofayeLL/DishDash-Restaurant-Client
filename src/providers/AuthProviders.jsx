@@ -63,7 +63,7 @@ const AuthProviders = ({ children }) => {
                 // get token and store client
                 axiosPublic.post('/jwt', userInfo)
                     .then(data => {
-                        console.log(data.data);
+                        // console.log(data.data);
                         if (data.data.token) {
                             localStorage.setItem('access-token', data.data.token)
                         }
