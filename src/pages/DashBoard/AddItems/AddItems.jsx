@@ -2,15 +2,18 @@ import { useForm } from "react-hook-form";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import { GiForkKnifeSpoon } from "react-icons/gi";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddItems = () => {
-    const { register, handleSubmit } = useForm()
+    const { register, handleSubmit, reset } = useForm()
 
     const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
     const onSubmit = async (data) => {
         console.log(data);
 
@@ -21,6 +24,31 @@ const AddItems = () => {
                 'Content-Type': 'multipart/form-data'
             }
         });
+        console.log(res.data);
+        if (res.data.success) {
+            // now send data to the server with image url
+            const menuItem = {
+                name: data.name,
+                category: data.category,
+                recipe: data.recipe,
+                price: parseFloat(data.price),
+                image: res.data.data.display_url
+            }
+
+            // by use axios secure post data to the data base
+            const menuData = await axiosSecure.post('/menu', menuItem);
+            console.log(menuData.data);
+            if (menuData.data.insertedId) {
+                // show success popup
+                Swal.fire({
+                    title: 'Success!',
+                    text: `${data.name} is added in the menu successfully`,
+                    icon: 'success',
+                    confirmButtonText: 'Cool'
+                })
+                reset();
+            }
+        }
         console.log(res.data);
     }
     return (
