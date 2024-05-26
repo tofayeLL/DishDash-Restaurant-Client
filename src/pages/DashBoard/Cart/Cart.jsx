@@ -2,6 +2,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import useCart from "../../../hooks/useCart";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 
 const Cart = () => {
@@ -29,13 +30,13 @@ const Cart = () => {
 
                     axiosSecure.delete(`/carts/${id}`)
 
-                      
+
                         .then(data => {
                             console.log(data.data);
                             if (data.data.deletedCount > 0) {
                                 Swal.fire({
                                     title: "Deleted!",
-                                    text: "Your craft has been deleted.",
+                                    text: "Your item has been deleted.",
                                     icon: "success"
                                 });
 
@@ -69,7 +70,13 @@ const Cart = () => {
             <div className="flex items-center justify-around mb-10">
                 <h1 className="text-3xl">Item: {cart.length}</h1>
                 <h1 className="text-3xl">Total price: {totalPrice}</h1>
-                <button className="btn btn-primary">Pay</button>
+                {
+                    cart.length > 0 ? <Link to={`/dashboard/payment`}>
+                        <button className="btn btn-primary">Pay</button>
+                    </Link> :
+                        <button disabled className="btn btn-primary">Pay</button>
+
+                }
 
             </div>
 
