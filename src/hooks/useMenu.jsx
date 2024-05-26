@@ -20,15 +20,15 @@ const useMenu = () => {
        }, []) */
 
 
-    const { data: menu = [], isPending: loading, refetch } = useQuery({
+    const { data: menu, isPending: loading, refetch } = useQuery({
         queryKey: ['menu'],
         queryFn: async () => {
             const res = await axiosPublic.get('/menu');
             return res.data;
-        }
+        }, initialData: []
     })
 
-    return [menu, loading, refetch]
+    return { menu, loading, refetch }
 };
 
 export default useMenu;

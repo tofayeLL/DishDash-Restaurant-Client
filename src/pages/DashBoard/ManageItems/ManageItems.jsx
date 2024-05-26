@@ -3,18 +3,19 @@ import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import useMenu from "../../../hooks/useMenu";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 
 
 
 const ManageItems = () => {
-    const [menu, loading, refetch] = useMenu();
+    const { menu, loading, refetch } = useMenu();
 
     // console.log(menu);
 
     const axiosSecure = useAxiosSecure();
 
-    if(loading){
+    if (loading) {
         // from useMenu tan stack loading
         return <div className="flex flex-col justify-center items-center"><span className="loading loading-bars loading-lg"></span></div>
     }
@@ -110,10 +111,12 @@ const ManageItems = () => {
                                     </td>
                                     <td>{item.price}</td>
                                     <td>
-                                        <button
-                                            className="bg-amber-400 p-2 rounded-md">
-                                            <span className="text-lg text-white "><FaEdit></FaEdit></span>
-                                        </button>
+                                        <Link to={`/dashboard/updateMenu/${item._id}`}>
+                                            <button
+                                                className="bg-amber-400 p-2 rounded-md">
+                                                <span className="text-lg text-white "><FaEdit></FaEdit></span>
+                                            </button>
+                                        </Link>
                                     </td>
                                     <td>
                                         <button onClick={() => handleDeleteItem(item)}
