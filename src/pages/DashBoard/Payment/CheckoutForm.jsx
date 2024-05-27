@@ -4,6 +4,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCart from "../../../hooks/useCart";
 import useAuth from "../../../hooks/useAuth";
 
+
 const CheckoutForm = () => {
     const [error, setError] = useState();
     const [clientSecret, setClientSecret] = useState("");
@@ -19,11 +20,13 @@ const CheckoutForm = () => {
 
 
     useEffect(() => {
-        axiosSecure.post('/create-payment-intent', { price: totalPrice })
-            .then(res => {
-                console.log(res.data.clientSecret);
-                setClientSecret(res.data.clientSecret);
-            })
+        if (totalPrice > 0) {
+            axiosSecure.post('/create-payment-intent', { price: totalPrice })
+                .then(res => {
+                    console.log(res.data.clientSecret);
+                    setClientSecret(res.data.clientSecret);
+                })
+        }
 
     }
         , [axiosSecure, totalPrice])
@@ -86,6 +89,21 @@ const CheckoutForm = () => {
             if (paymentIntent.status === 'succeeded') {
                 console.log('your transaction id', paymentIntent.id);
                 setTransactionId(paymentIntent.id)
+
+
+                // now save data to the database
+                const payment = {
+                    email: user?.email,
+                    price: totalPrice,
+                    transactionId: paymentIntent.id,
+                    date: new Date(),
+                    cartIds: cart.map(item => item._id),
+                    menuIds: cart.map(item => item.menuId),
+                    status: 'pending'
+                }
+
+                const res = await axiosSecure.post('/payments', payment);
+                console.log('payment saved', res.data);
             }
         }
 
