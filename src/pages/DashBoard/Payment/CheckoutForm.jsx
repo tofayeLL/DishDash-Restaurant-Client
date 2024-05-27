@@ -2,10 +2,12 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCart from "../../../hooks/useCart";
+import useAuth from "../../../hooks/useAuth";
 
 const CheckoutForm = () => {
     const [error, setError] = useState();
     const [clientSecret, setClientSecret] = useState("");
+    const [transactionId, setTransactionId] = useState("");
 
     const stripe = useStripe();
     const elements = useElements();
@@ -13,6 +15,7 @@ const CheckoutForm = () => {
     const [cart] = useCart();
     const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
     console.log(totalPrice);
+    const { user } = useAuth();
 
 
     useEffect(() => {
@@ -61,7 +64,35 @@ const CheckoutForm = () => {
             setError('');
         }
 
+
+        // confirm payment
+        const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: card,
+                billing_details: {
+                    email: user?.email || 'anonymous',
+                    name: user?.displayName || 'anonymous',
+                }
+
+            }
+
+        })
+
+        if (confirmError) {
+            console.log('confirm payment error');
+        }
+        else {
+            console.log('payment intent', paymentIntent);
+            if (paymentIntent.status === 'succeeded') {
+                console.log('your transaction id', paymentIntent.id);
+                setTransactionId(paymentIntent.id)
+            }
+        }
+
     }
+
+
+
     return (
         <div>
             <form onSubmit={handleSubmit}>
@@ -86,6 +117,9 @@ const CheckoutForm = () => {
                 </button>
             </form>
             <p className="text-red-400 font-semibold">{error}</p>
+            {
+                transactionId && <p className="text-green-500 font-semibold ">your transaction Id:{transactionId}</p>
+            }
 
         </div>
     );
