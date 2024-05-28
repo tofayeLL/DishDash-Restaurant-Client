@@ -68,6 +68,10 @@ const Dashboard = () => {
 
                                     <NavLink to={'/dashboard/myBooking'}><span> <MdEditCalendar></MdEditCalendar></span>My Booking</NavLink>
                                 </li>
+                                <li>
+
+                                    <NavLink to={'/dashboard/paymentHistory'}><span> <MdEditCalendar></MdEditCalendar></span>PaymentHistory</NavLink>
+                                </li>
                             </>
                     }
 
