@@ -54,7 +54,7 @@ const AuthProviders = ({ children }) => {
     useEffect(() => {
         const unsubsCribe = onAuthStateChanged(auth, (currentUser) => {
             console.log('observe current user', currentUser);
-            setUser(currentUser);
+           
 
 
             // jwt
@@ -66,19 +66,23 @@ const AuthProviders = ({ children }) => {
                         // console.log(data.data);
                         if (data.data.token) {
                             localStorage.setItem('access-token', data.data.token)
+                            setUser(currentUser);
+                            setLoading(false);
                         }
 
                     })
             }
             else {
                 // remove token (if token stored to the client side: Local storage or caching or memory ) 
-                localStorage.removeItem('access-token')
+                localStorage.removeItem('access-token');
+                setUser(null);
+                setLoading(false);
             }
 
-            setLoading(false);
+            
         });
         return () => {
-            return unsubsCribe;
+            unsubsCribe();
         }
     }, [])
 

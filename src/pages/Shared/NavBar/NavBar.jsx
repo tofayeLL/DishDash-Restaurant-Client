@@ -3,13 +3,15 @@ import { NavLink } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { FaShoppingCart } from "react-icons/fa";
 import useCart from "../../../hooks/useCart";
+import useAdmin from "../../../hooks/useAdmin";
 
 
 
 
 const NavBar = () => {
     const [cart] = useCart();
- 
+    const [isAdmin] = useAdmin();
+
 
     const { user, logOutUser } = useAuth();
 
@@ -40,6 +42,13 @@ const NavBar = () => {
                 <div className="badge badge-secondary">+{cart.length}</div>
             </button>
         </NavLink></li>
+
+        {
+            user && isAdmin && <li><NavLink to={'/dashboard/adminHome'}>Dashboard</NavLink></li>
+        }
+        {
+            user && !isAdmin && <li><NavLink to={'/dashboard/userHome'}>Dashboard</NavLink></li>
+        }
 
 
         {
